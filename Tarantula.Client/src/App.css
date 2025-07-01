@@ -1,0 +1,23 @@
+
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+input:focus {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+}
+
+button:hover {
+    border-color: #dadce0 !important;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1) !important;
+}
