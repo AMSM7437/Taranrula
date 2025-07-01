@@ -12,12 +12,13 @@ The entire thing is made to be modular and uses no libraries, you can just take 
 ---
 ## Notes
 
-there's really nothing to it ,just make sure you do npm install for the react app before running, and if something does not work just check the server url.
-i'll work on making that better to have a static API url.
-
+There's really nothing to it ,just make sure you do npm install for the react app before running, and if something does not work just check the server url.
+I'll work on making that better to have a static API url.
+---
+## Important
+Once you clone the project, open the runner and give it a random link to crawl and do its job, so that you have data to test on and try the API.
 ---
 ## Built With
-
 - C#
 - ASP.NET Core
 - React.
