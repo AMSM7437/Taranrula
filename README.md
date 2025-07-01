@@ -11,8 +11,10 @@ The entire thing is made to be modular and uses no libraries, you can just take 
 - It still requires a lot of work and a lot more features, so if you'd like to suggest anything please contact me.
 ---
 ## Notes
+
 there's really nothing to it ,just make sure you do npm install for the react app before running, and if something does not work just check the server url.
 i'll work on making that better to have a static API url.
+
 ---
 ## Built With
 
