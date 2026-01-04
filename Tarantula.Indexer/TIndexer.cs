@@ -2,44 +2,27 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Tarantula.Models;
-
-
+using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
+using System.Net.Http.Headers;
+using LibDatabase;
 namespace Tarantula.Indexer
 {
     public class TIndexer
     {
-        private readonly Dictionary<string, HashSet<string>> index = new();
-        public void addPage(PageResult page)
+        public readonly string _connectionString;
+        private DBHelper _dBHelper;
+       
+        private static readonly HashSet<string> StopWords = new HashSet<string>{
+               "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
+               "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
+               "to", "was", "were", "will", "with", "this", "but", "not", "or",
+               "you", "i", "they", "we", "she", "he", "his", "her", "their" ,"nbsp"
+        };
+        public TIndexer()
         {
-            string[] tokens = Tokenize(page.Text);
-            foreach (string token in tokens) {
-                if (!index.ContainsKey(token)) { 
-                        index[token] = new HashSet<string>();
-                }
-                index[token].Add(page.Url);
-            }
-
-        }
-        public  async Task<List<string>> Search(string word)
-        {
-
-            word = word.ToLowerInvariant();
-            return index.ContainsKey(word) ? new List<string>(index[word]) : new List<string>();
-
-        }
-        public string[] Tokenize(string text) { 
-        text = text.ToLowerInvariant();
-            text = Regex.Replace(text, @"[^\w\s]", "");
-            return text.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-
-        }
-        //testing only 
-        public void PrintIndex()
-        {
-            foreach (var pair in index)
-            {
-                Console.WriteLine($"{pair.Key}: {string.Join(", ", pair.Value)}");
-            }
+            _connectionString = "Data Source=.;Initial Catalog=TarantulaDatabase;Integrated security=True;User Id=sa;Password=sa;TrustServerCertificate=True;";
+            _dBHelper = new DBHelper(_connectionString);
         }
     }
 }

@@ -9,9 +9,11 @@ class TRunner
 {
     static async Task Main(string[] args)
     {
-        var crawler = new TCrawler(500);
+        var crawler = new TCrawler( maxPages : 500);
         var dbPath = Path.Combine(Environment.CurrentDirectory, "index.db");
         var indexer = new SQLiteIndexer(dbPath);
+        //TIndexer test = new TIndexer();
+
 
         await foreach (var page in crawler.CrawlStreamAsync("https://en.wikipedia.com"))
         {

@@ -72,7 +72,7 @@ namespace Tarantula.Indexer
             using var transaction = connection.BeginTransaction();
 
             var pragmaCmd = connection.CreateCommand();
-            pragmaCmd.CommandText = "PRAGMA foreign_keys = ON;";
+            pragmaCmd.CommandText = "PRAGMA foreign_keys = ON;"; 
             pragmaCmd.Transaction = transaction;
             pragmaCmd.ExecuteNonQuery();
 
