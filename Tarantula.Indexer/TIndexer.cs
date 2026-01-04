@@ -27,7 +27,7 @@ namespace Tarantula.Indexer
             _dBHelper = new DBHelper(_connectionString);
         }
 
-        private string[] Tokenize(string text)
+        private static string[] Tokenize(string text)
         {
             text = text.ToLowerInvariant();
             var rawTokens = Regex.Replace(text, @"[^\w\s]", "")
@@ -46,7 +46,6 @@ namespace Tarantula.Indexer
             try
             {
                 Guid documentId = EnsureDocumentExists(page, conn, tx);
-                // must fix later and update the dbhelper to work with transactions
                 var tokens = Tokenize(page.Text);
                 var wordFrequencies = tokens
                     .GroupBy(w => w)
@@ -69,7 +68,7 @@ namespace Tarantula.Indexer
                         new SqlParameter("@docId", documentId),
                         new SqlParameter("@freq", word.Value)
                     };
-                    _dBHelper.executeNonQuery(
+                    _dBHelper.ExecuteNonQuery(
                         mergeQuery,
                         ref errMsg,
                         conn,
@@ -87,7 +86,7 @@ namespace Tarantula.Indexer
             }
         }
 
-        private Guid EnsureDocumentExists(
+        private static Guid EnsureDocumentExists(
             PageResult page,
             SqlConnection connection,
             SqlTransaction transaction)
@@ -125,5 +124,6 @@ namespace Tarantula.Indexer
 
             return documentId;
         }
+        // search logic goes here 
     }
 }

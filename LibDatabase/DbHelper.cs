@@ -6,7 +6,7 @@ namespace LibDatabase
     public class DBHelper
     {
         private readonly string _connectionString;
-        private readonly string _masterConnection = "Server=localhost;Integrated security=True;User Id=sa;Password=sa;TrustServerCertificate=True;database=master";
+        private readonly string _masterConnection = "Server=localhost;Integrated security=True;TrustServerCertificate=True;database=master";
         public DBHelper(string connectionString)
         {
             _connectionString = connectionString;
@@ -14,10 +14,10 @@ namespace LibDatabase
         }
         private void InitializeDatabase()
         {
-            createDatabase();
-            createTables();
+            CreateDatabase();
+            CreateTables();
         }
-        private void createDatabase()
+        private void CreateDatabase()
         {
             string errMsg = string.Empty;
             string query = @"IF NOT EXISTS (
@@ -28,14 +28,14 @@ namespace LibDatabase
                         BEGIN
                             CREATE DATABASE [testlast];
                         END";
-            int res = executeNonQuery(query, _masterConnection, ref errMsg);
+            int res = ExecuteNonQuery(query, _masterConnection, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
             {
                 Console.WriteLine("LibDatabase.DBHelper.CreateDatabase error :" + errMsg);
             }
 
         }
-        private void createTables()
+        private void CreateTables()
         {
             string errMsg = string.Empty;
             string query = @"IF EXISTS (SELECT name
@@ -62,7 +62,7 @@ namespace LibDatabase
                                  CREATE INDEX idx_words ON tblTInvertedIndex(Word)
                                  END
                         END";
-            int res = executeNonQuery(query, _masterConnection, ref errMsg);
+            int res = ExecuteNonQuery(query, _masterConnection, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
             {
                 Console.WriteLine("LibDatabase.DBHelper.createTables error :" + errMsg);
@@ -74,7 +74,7 @@ namespace LibDatabase
             return new SqlConnection(_connectionString);
         }
 
-        public DataTable executeQuery(string query, ref string errMsg, params SqlParameter[] sqlParams)
+        public DataTable ExecuteQuery(string query, ref string errMsg, params SqlParameter[] sqlParams)
         {
 
             using (SqlConnection conn = GetSqlConnection())
@@ -104,7 +104,7 @@ namespace LibDatabase
             }
 
         }
-        public DataTable executeQuery(string query, string connectionString, ref string errMsg, params SqlParameter[] sqlParams)
+        public DataTable ExecuteQuery(string query, string connectionString, ref string errMsg, params SqlParameter[] sqlParams)
         {
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -135,7 +135,7 @@ namespace LibDatabase
 
         }
 
-        public int executeNonQuery(string query, ref string errMsg, SqlParameter[] parameters = null)
+        public int ExecuteNonQuery(string query, ref string errMsg, SqlParameter[] parameters = null)
         {
             int result = -1;
 
@@ -162,7 +162,7 @@ namespace LibDatabase
 
             return result;
         }
-        public int executeNonQuery(string query, ref string errMsg, SqlConnection conn, SqlTransaction transaction, SqlParameter[] parameters = null)
+        public int ExecuteNonQuery(string query, ref string errMsg, SqlConnection conn, SqlTransaction transaction, SqlParameter[] parameters = null)
         {
             try
             {
@@ -178,7 +178,7 @@ namespace LibDatabase
                 return -1;
             }
         }
-        public int executeNonQuery(string query, string connectionString, ref string errMsg, SqlParameter[] parameters = null)
+        public int ExecuteNonQuery(string query, string connectionString, ref string errMsg, SqlParameter[] parameters = null)
         {
             int result = -1;
 
@@ -205,7 +205,7 @@ namespace LibDatabase
 
             return result;
         }
-        public bool executeStoredProcedure(string procedureName, SqlParameter[] parameters = null)
+        public bool ExecuteStoredProcedure(string procedureName, SqlParameter[] parameters = null)
         {
             try
             {
