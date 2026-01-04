@@ -11,11 +11,11 @@ class TRunner
     {
         var crawler = new TCrawler( maxPages : 500);
         var dbPath = Path.Combine(Environment.CurrentDirectory, "index.db");
-        var indexer = new SQLiteIndexer(dbPath);
+        var indexer = new TIndexer();
         //TIndexer test = new TIndexer();
 
 
-        await foreach (var page in crawler.CrawlStreamAsync("https://en.wikipedia.com"))
+        await foreach (var page in crawler.CrawlStreamAsync("http://localhost"))
         {
             page.Title = TParser.ExtractTitle(page.Html);
             page.Text = TParser.ExtractText(page.Html);

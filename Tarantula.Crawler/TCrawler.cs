@@ -86,9 +86,9 @@ public class TCrawler
 
             var response = await httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            if (response != null && !response.Content.Headers.ContentType.MediaType.Contains("text/html"))
-            {
 
+            if (response != null && response.Content.Headers.ContentType?.MediaType != null && !response.Content.Headers.ContentType.MediaType.Contains("text/html"))
+            {
                 return null;
             }
 

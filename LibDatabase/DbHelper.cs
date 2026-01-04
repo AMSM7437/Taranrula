@@ -28,12 +28,12 @@ namespace LibDatabase
                         BEGIN
                             CREATE DATABASE [testlast];
                         END";
-           int res = executeNonQuery(query, _masterConnection, ref errMsg);
+            int res = executeNonQuery(query, _masterConnection, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
             {
                 Console.WriteLine("LibDatabase.DBHelper.CreateDatabase error :" + errMsg);
             }
-           
+
         }
         private void createTables()
         {
@@ -47,13 +47,13 @@ namespace LibDatabase
                                  BEGIN
                                  CREATE TABLE  tblTDocuments (
                                      Id UniqueIdentifier PRIMARY KEY,
-                                     Url Varchar UNIQUE,
-                                     Title Varchar,
-                                     Meta Varchar,
-                                     Text Varchar
+                                     Url Varchar(250) UNIQUE,
+                                     Title Varchar(250),
+                                     Meta Varchar(500),
+                                     Text Varchar(MAX)
                                  );
                                    CREATE TABLE  tblTInvertedIndex (
-                                     Word Varchar,
+                                     Word Varchar(8000),
                                      DocumentId UniqueIdentifier,
                                      Frequency INT,
                                      PRIMARY KEY (Word, DocumentId),
@@ -62,7 +62,7 @@ namespace LibDatabase
                                  CREATE INDEX idx_words ON tblTInvertedIndex(Word)
                                  END
                         END";
-         int res = executeNonQuery(query, _masterConnection , ref errMsg);
+            int res = executeNonQuery(query, _masterConnection, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
             {
                 Console.WriteLine("LibDatabase.DBHelper.createTables error :" + errMsg);
@@ -104,7 +104,7 @@ namespace LibDatabase
             }
 
         }
-        public DataTable executeQuery(string query, string connectionString, ref string errMsg, params SqlParameter[] sqlParams )
+        public DataTable executeQuery(string query, string connectionString, ref string errMsg, params SqlParameter[] sqlParams)
         {
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -127,15 +127,15 @@ namespace LibDatabase
                             adapter.Fill(db);
                         }
                     }
-                    catch(Exception ex) { errMsg = ex.Message; }
-                   
+                    catch (Exception ex) { errMsg = ex.Message; }
+
                     return db;
                 }
             }
 
         }
 
-        public int executeNonQuery(string query, ref string errMsg,  SqlParameter[] parameters = null)
+        public int executeNonQuery(string query, ref string errMsg, SqlParameter[] parameters = null)
         {
             int result = -1;
 
@@ -162,7 +162,23 @@ namespace LibDatabase
 
             return result;
         }
-        public int executeNonQuery(string query,string connectionString, ref string errMsg ,  SqlParameter[] parameters = null)
+        public int executeNonQuery(string query, ref string errMsg, SqlConnection conn, SqlTransaction transaction, SqlParameter[] parameters = null)
+        {
+            try
+            {
+                using SqlCommand cmd = new SqlCommand(query, conn, transaction);
+                if (parameters != null)
+                    cmd.Parameters.AddRange(parameters);
+
+                return cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return -1;
+            }
+        }
+        public int executeNonQuery(string query, string connectionString, ref string errMsg, SqlParameter[] parameters = null)
         {
             int result = -1;
 
@@ -180,7 +196,8 @@ namespace LibDatabase
                         result = cmd.ExecuteNonQuery();
 
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         errMsg = ex.Message;
                     }
                 }
