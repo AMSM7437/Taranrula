@@ -5,6 +5,7 @@ using Tarantula.Models;
 using Microsoft.Data.SqlClient;
 using LibDatabase;
 using System.Data;
+using System.Diagnostics;
 
 namespace Tarantula.Indexer
 {
@@ -59,21 +60,21 @@ namespace Tarantula.Indexer
                     WHEN NOT MATCHED THEN
                         INSERT (Word, DocumentId, Frequency)
                         VALUES (@word, @docId, @freq);";
-          
+
                 foreach (var word in wordFrequencies)
                 {
-                    SqlParameter[] mergeParama = new SqlParameter[]
-                    {
-                         new SqlParameter("@word", word.Key),
-                        new SqlParameter("@docId", documentId),
-                        new SqlParameter("@freq", word.Value)
-                    };
+                    SqlParameter[] sqlParams =
+                    [
+                         new("@word", word.Key),
+                        new("@docId", documentId),
+                        new("@freq", word.Value)
+                    ];
                     _dBHelper.ExecuteNonQuery(
                         mergeQuery,
                         ref errMsg,
                         conn,
                         tx,
-                       mergeParama
+                        sqlParams
                     );
                 }
 
@@ -86,7 +87,7 @@ namespace Tarantula.Indexer
             }
         }
 
-        private static Guid EnsureDocumentExists(
+        private static Guid EnsureDocumentExists( // modify later to use dbhelper and return single value instead of datatable in dbhelper for certain select statements
             PageResult page,
             SqlConnection connection,
             SqlTransaction transaction)
@@ -124,6 +125,54 @@ namespace Tarantula.Indexer
 
             return documentId;
         }
-        // search logic goes here 
+        public async Task<List<(string Url, string Title, string Meta, double Score)>> Search(string searchQuery)
+        {
+            string errMsg = string.Empty;
+            var results = new Dictionary<string, (string Title, string Meta, double Score)>();
+            string[] words = searchQuery.ToLowerInvariant().Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(w => !StopWords.Contains(w))
+                .ToArray();
+
+            if (words.Length == 0)
+            {
+                return results.Select(r => (r.Key, r.Value.Title, r.Value.Meta, r.Value.Score)).ToList();
+            }
+            string totalDocsQuery = @"SELECT COUNT(*) FROM tblTDocuments;";
+            double totalDocsCount = Convert.ToDouble(_dBHelper.ExecuteScalar(totalDocsQuery, ref errMsg));
+            foreach (var word in words)
+            {
+                string query = @" SELECT d.Url,d.Title, d.Meta,  i.Frequency,
+                   (SELECT COUNT(DISTINCT DocumentId) FROM tblTInvertedIndex WHERE Word = @word) AS DocFreq
+            FROM tblTInvertedIndex i
+            JOIN tblTDocuments d ON d.Id = i.DocumentId
+            WHERE i.Word = @word";
+                SqlParameter[] searchParams = [new("@word", word)];
+
+                DataTable res = _dBHelper.ExecuteQuery(query, ref errMsg, searchParams);
+                foreach (DataRow row in res.Rows)
+                {
+                    string url = row["Url"].ToString();
+                    string title = row["Title"].ToString()!;
+                    string meta = row["Meta"].ToString()!;
+                    int tf = Convert.ToInt32(row["Frequency"]);
+                    int docFreq = Convert.ToInt32(row["DocFreq"]);
+                    double idf = Math.Log((totalDocsCount + 1) / (1 + docFreq));
+                    double tfidf = tf * idf;
+                    if (results.ContainsKey(url))
+                    {
+                        var existing = results[url];
+                        results[url] = (existing.Title, existing.Meta, existing.Score + tfidf);
+                    }
+                    else
+                    {
+                        results[url] = (title, meta, tfidf);
+                    }
+                }
+            }
+            return results
+                        .OrderByDescending(r => r.Value.Score)
+                        .Select(r => (r.Key, r.Value.Title, r.Value.Meta, Math.Round(r.Value.Score, 4)))
+                        .ToList();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace LibDatabase
 {
@@ -104,6 +105,28 @@ namespace LibDatabase
             }
 
         }
+        public DataTable ExecuteQuery(string query, ref string errMsg, SqlConnection conn, SqlTransaction transaction, params SqlParameter[] sqlParams)
+        {
+            using (SqlCommand command = new SqlCommand(query, conn, transaction))
+            {
+                if (sqlParams != null)
+                {
+                    command.Parameters.AddRange(sqlParams);
+
+                }
+                DataTable db = new DataTable();
+                try
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(db);
+                    }
+                }
+                catch (Exception ex) { errMsg = ex.Message; }
+
+                return db;
+            }
+        }
         public DataTable ExecuteQuery(string query, string connectionString, ref string errMsg, params SqlParameter[] sqlParams)
         {
 
@@ -204,6 +227,32 @@ namespace LibDatabase
             }
 
             return result;
+        }
+        public object ExecuteScalar(string query, ref string errMsg, SqlParameter[] parameters = null)
+        {
+
+            using (SqlConnection conn = GetSqlConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    if (parameters != null)
+                    {
+                        cmd.Parameters.AddRange(parameters);
+                    }
+                    conn.Open();
+                    try
+                    {
+                       return cmd.ExecuteScalar();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        errMsg = ex.Message;
+                        return null;
+                    }
+                }
+            }
+
         }
         public bool ExecuteStoredProcedure(string procedureName, SqlParameter[] parameters = null)
         {

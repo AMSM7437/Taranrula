@@ -4,7 +4,7 @@ using Tarantula.Indexer;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 var dbPath = @"../Tarantula.Runner/bin/Debug/net9.0/index.db";
-builder.Services.AddSingleton<SQLiteIndexer>(_ => new SQLiteIndexer(dbPath));
+builder.Services.AddSingleton<TIndexer>(_ => new TIndexer());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
@@ -37,7 +37,7 @@ app.MapGet("/", () => Results.Content(@"
     </body>
     </html>
 ", "text/html"));
-app.MapGet("/search", async ([FromQuery] string query, [FromServices] SQLiteIndexer indexer) =>
+app.MapGet("/search", async ([FromQuery] string query, [FromServices] TIndexer indexer) =>
 {
     if (string.IsNullOrWhiteSpace(query))
         return Results.BadRequest("Query parameter is required.");
