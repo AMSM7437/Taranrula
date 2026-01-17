@@ -24,10 +24,10 @@ namespace LibDatabase
             string query = @"IF NOT EXISTS (
                             SELECT name
                             FROM sys.databases
-                            WHERE name = N'testlast'
+                            WHERE name = N'TarantulaDatabase'
                         )
                         BEGIN
-                            CREATE DATABASE [testlast];
+                            CREATE DATABASE [TarantulaDatabase];
                         END";
             int res = ExecuteNonQuery(query, _masterConnection, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
@@ -41,9 +41,9 @@ namespace LibDatabase
             string errMsg = string.Empty;
             string query = @"IF EXISTS (SELECT name
                             FROM sys.databases
-                            WHERE name = N'testlast')
+                            WHERE name = N'TarantulaDatabase')
                         BEGIN
-                                 USE [testlast]
+                                 USE [TarantulaDatabase]
                                  IF NOT EXISTS (SELECT * from sysobjects where name='tblTDocuments')
                                  BEGIN
                                  CREATE TABLE  tblTDocuments (
@@ -54,7 +54,7 @@ namespace LibDatabase
                                      Text Varchar(MAX)
                                  );
                                    CREATE TABLE  tblTInvertedIndex (
-                                     Word Varchar(8000),
+                                     Word Varchar(255) NOT NULL,
                                      DocumentId UniqueIdentifier,
                                      Frequency INT,
                                      PRIMARY KEY (Word, DocumentId),

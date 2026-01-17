@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tarantula.Crawler", "Tarantula.Crawler\Tarantula.Crawler.csproj", "{DE9A62CA-CA26-444E-8B28-FDB386CA4E59}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Tarantula.Client", "Tarantula.Client\Tarantula.Client.esproj", "{22A0C142-D4CF-1831-5BC3-45826F196A57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibDatabase", "LibDatabase\LibDatabase.csproj", "{DB82EA95-D492-4198-B877-CAF7203C5756}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tarantula.Interface", "Tarantula.Interface\Tarantula.Interface.csproj", "{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,18 @@ Global
 		{DB82EA95-D492-4198-B877-CAF7203C5756}.Release|x64.Build.0 = Release|Any CPU
 		{DB82EA95-D492-4198-B877-CAF7203C5756}.Release|x86.ActiveCfg = Release|Any CPU
 		{DB82EA95-D492-4198-B877-CAF7203C5756}.Release|x86.Build.0 = Release|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Debug|x64.Build.0 = Debug|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Debug|x86.Build.0 = Debug|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Release|x64.ActiveCfg = Release|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Release|x64.Build.0 = Release|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B0EBE7D-B38A-4794-97DE-2A039A122F4E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

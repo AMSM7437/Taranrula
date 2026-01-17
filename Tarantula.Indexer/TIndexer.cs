@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LibDatabase;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Text.RegularExpressions;
 using Tarantula.Models;
-using Microsoft.Data.SqlClient;
-using LibDatabase;
-using System.Data;
-using System.Diagnostics;
 
 namespace Tarantula.Indexer
 {
     public class TIndexer
     {
         public readonly string _connectionString;
+        private static readonly int _maxTokenLength = 255;
         private DBHelper _dBHelper;
 
         private static readonly HashSet<string> StopWords = new HashSet<string>{
@@ -32,7 +30,7 @@ namespace Tarantula.Indexer
         {
             text = text.ToLowerInvariant();
             var rawTokens = Regex.Replace(text, @"[^\w\s]", "")
-                .Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                .Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries).Where(t => t.Length <= _maxTokenLength);
 
             return rawTokens.Where(token => !StopWords.Contains(token)).ToArray();
         }
@@ -151,7 +149,7 @@ namespace Tarantula.Indexer
                 DataTable res = _dBHelper.ExecuteQuery(query, ref errMsg, searchParams);
                 foreach (DataRow row in res.Rows)
                 {
-                    string url = row["Url"].ToString();
+                    string url = row["Url"].ToString()!;
                     string title = row["Title"].ToString()!;
                     string meta = row["Meta"].ToString()!;
                     int tf = Convert.ToInt32(row["Frequency"]);
