@@ -24,10 +24,10 @@ namespace LibDatabase
             string query = @"IF NOT EXISTS (
                             SELECT name
                             FROM sys.databases
-                            WHERE name = N'TarantulaDatabase'
+                            WHERE name = N'TarantulaDatabase2'
                         )
                         BEGIN
-                            CREATE DATABASE [TarantulaDatabase];
+                            CREATE DATABASE [TarantulaDatabase2];
                         END";
             int res = ExecuteNonQuery(query, _masterConnection, ref errMsg);
             if (!string.IsNullOrEmpty(errMsg))
@@ -41,9 +41,9 @@ namespace LibDatabase
             string errMsg = string.Empty;
             string query = @"IF EXISTS (SELECT name
                             FROM sys.databases
-                            WHERE name = N'TarantulaDatabase')
+                            WHERE name = N'TarantulaDatabase2')
                         BEGIN
-                                 USE [TarantulaDatabase]
+                                 USE [TarantulaDatabase2]
                                  IF NOT EXISTS (SELECT * from sysobjects where name='tblTDocuments')
                                  BEGIN
                                  CREATE TABLE  tblTDocuments (

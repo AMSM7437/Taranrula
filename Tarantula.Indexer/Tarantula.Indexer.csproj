@@ -7,11 +7,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LibDatabase\LibDatabase.csproj" />
-    <ProjectReference Include="..\Tarantula.Models\Tarantula.Models.csproj" />
+    <ProjectReference Include="..\Tarantula.Core\Tarantula.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>

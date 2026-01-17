@@ -1,19 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System;
-using System.Net.Http;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Buffers.Text;
-using System.Timers;
-using System.Data.SqlTypes;
-using System.Diagnostics.Contracts;
-using Tarantula.Models;
+using Tarantula.Core.Classes;
+using Tarantula.Core.Interfaces;
 
 
 namespace Tarantula.Crawler;
 
-public class TCrawler
+public class TCrawler : ICrawler
 {
     private readonly HttpClient httpClient;
     private readonly Queue<string> urlQueue = new Queue<string>();
@@ -21,7 +15,7 @@ public class TCrawler
     private readonly int maxPages;
     private int foundLinks;
     private readonly RobotsCache robots;
-
+    public event Action<PageError> PageErrored ;
     public TCrawler(int maxPages)
     {
         this.maxPages = maxPages;
@@ -39,6 +33,8 @@ public class TCrawler
 
         while (urlQueue.Count > 0 && visitedUrls.Count < maxPages)
         {
+
+           
             string currentUrl = urlQueue.Dequeue();
             if (visitedUrls.Contains(currentUrl)) continue;
 
@@ -55,6 +51,8 @@ public class TCrawler
             if (html == null)
             {
                 Console.WriteLine($"Failed to download or skipped non-html content: {currentUrl}");
+                PageError pageError = new(url, "Failed to download or skipped non - html content");
+                PageErrored?.Invoke(pageError);
                 continue;
             }
 
@@ -97,6 +95,8 @@ public class TCrawler
         catch (Exception ex)
         {
             Console.WriteLine($"Error downloading page: {ex.Message}");
+            PageError pageError = new PageError(url, ex.Message);
+            PageErrored?.Invoke(pageError);
             return null;
         }
     }

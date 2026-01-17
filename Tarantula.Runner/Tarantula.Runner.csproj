@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\Tarantula.Core\Tarantula.Core.csproj" />
     <ProjectReference Include="..\Tarantula.Crawler\Tarantula.Crawler.csproj" />
     <ProjectReference Include="..\Tarantula.Parser\Tarantula.Parser.csproj" />
-    <ProjectReference Include="..\Tarantula.Models\Tarantula.Models.csproj" />
     <ProjectReference Include="..\Tarantula.Indexer\Tarantula.Indexer.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>

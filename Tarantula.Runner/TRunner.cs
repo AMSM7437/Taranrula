@@ -1,18 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Tarantula.Core.Classes;
 using Tarantula.Crawler;
 using Tarantula.Indexer;
-using Tarantula.Models;
 using Tarantula.Parser;
 
 class TRunner
 {
+
+    public static void handlePageError(PageError pageError)  {
+        Console.WriteLine(pageError.errMsg);
+    }
     static async Task Main(string[] args)
     {
-        var crawler = new TCrawler( maxPages : 500);
-        var dbPath = Path.Combine(Environment.CurrentDirectory, "index.db");
-        var indexer = new TIndexer();
+        var crawler = new TCrawler(maxPages: 500);
+        crawler.PageErrored += handlePageError;
 
+        var indexer = new TIndexer();
+        
 
         await foreach (var page in crawler.CrawlStreamAsync("http://localhost"))
         {

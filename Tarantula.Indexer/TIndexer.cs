@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Text.RegularExpressions;
-using Tarantula.Models;
+using Tarantula.Core.Classes;
 
 namespace Tarantula.Indexer
 {

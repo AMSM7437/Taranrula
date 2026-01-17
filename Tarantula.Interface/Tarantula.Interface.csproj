@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tarantula.Crawler\Tarantula.Crawler.csproj" />
     <ProjectReference Include="..\Tarantula.Indexer\Tarantula.Indexer.csproj" />
+    <ProjectReference Include="..\Tarantula.Parser\Tarantula.Parser.csproj" />
   </ItemGroup>
 
 </Project>
