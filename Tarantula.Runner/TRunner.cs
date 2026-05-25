@@ -11,13 +11,13 @@ class TRunner
     }
     static async Task Main(string[] args)
     {
-        var crawler = new TCrawler(maxPages: 500);
+        var crawler = new TCrawler(maxPages: 10);
         crawler.PageErrored += handlePageError;
 
         var indexer = new TIndexer();
         
 
-        await foreach (var page in crawler.CrawlStreamAsync("http://localhost"))
+        await foreach (var page in crawler.CrawlStreamAsync("https://www.wikipedia.org/"))
         {
             page.Title = TParser.ExtractTitle(page.Html);
             page.Text = TParser.ExtractText(page.Html);

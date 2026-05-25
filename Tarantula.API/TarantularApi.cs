@@ -3,7 +3,6 @@ using Tarantula.Indexer;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
-var dbPath = @"../Tarantula.Runner/bin/Debug/net9.0/index.db";
 builder.Services.AddSingleton<TIndexer>(_ => new TIndexer());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -33,16 +32,16 @@ app.MapGet("/", () => Results.Content(@"
     <head><title>Tarantula API</title></head>
     <body style='font-family:sans-serif; text-align:center; margin-top:100px;'>
         <h1>Tarantula API is Alive</h1>
-        <p> search endpoint : <code>/api/search?query=example</code>.</p>
+        <p> search endpoint : <code>/Tarantula/search?query=example</code>.</p>
     </body>
     </html>
 ", "text/html"));
-app.MapGet("/search", async ([FromQuery] string query, [FromServices] TIndexer indexer) =>
+app.MapGet("/search", ([FromQuery] string query, [FromServices] TIndexer indexer) =>
 {
     if (string.IsNullOrWhiteSpace(query))
         return Results.BadRequest("Query parameter is required.");
-    
-    var results = await indexer.Search(query);
+
+    var results = indexer.Search(query);
 
     return Results.Ok(results.Select(r => new
     {

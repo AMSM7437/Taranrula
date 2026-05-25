@@ -7,7 +7,7 @@ namespace LibDatabase
     public class DBHelper
     {
         private readonly string _connectionString;
-        private readonly string _masterConnection = "Server=localhost;Integrated security=True;TrustServerCertificate=True;database=master";
+        private readonly string _masterConnection = "Server=localhost;Integrated Security=True;TrustServerCertificate=True;Encrypt=False;Database=master";
         public DBHelper(string connectionString)
         {
             _connectionString = connectionString;

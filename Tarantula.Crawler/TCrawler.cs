@@ -41,11 +41,11 @@ public class TCrawler : ICrawler
             Console.WriteLine($"\nCrawling ({visitedUrls.Count + 1}/{maxPages}): {currentUrl}");
             visitedUrls.Add(currentUrl);
 
-            //if (!await robots.IsAllowedAsync(currentUrl))
-            //{
-            //    Console.WriteLine($"Blocked by robots.txt: {currentUrl}");
-            //    continue;
-            //}
+            if (!await robots.IsAllowedAsync(currentUrl))
+            {
+                Console.WriteLine($"Blocked by robots.txt: {currentUrl}");
+                continue;
+            }
 
             string html = await DownloadPageAsync(currentUrl);
             if (html == null)

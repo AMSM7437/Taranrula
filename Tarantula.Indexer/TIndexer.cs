@@ -22,7 +22,7 @@ namespace Tarantula.Indexer
         public TIndexer()
         {
             _connectionString =
-                "Data Source=.;Initial Catalog=TarantulaDatabase;Integrated Security=True;TrustServerCertificate=True;";
+                "Data Source=localhost;Initial Catalog=TarantulaDatabase2;Integrated Security=True;TrustServerCertificate=True;Encrypt=False;";
             _dBHelper = new DBHelper(_connectionString);
         }
 
@@ -45,7 +45,7 @@ namespace Tarantula.Indexer
             try
             {
                 Guid documentId = EnsureDocumentExists(page, conn, tx);
-                var tokens = Tokenize(page.Text);
+                var tokens = Tokenize(page.Text ?? string.Empty);
                 var wordFrequencies = tokens
                     .GroupBy(w => w)
                     .ToDictionary(g => g.Key, g => g.Count());
@@ -123,12 +123,12 @@ namespace Tarantula.Indexer
 
             return documentId;
         }
-        public async Task<List<(string Url, string Title, string Meta, double Score)>> Search(string searchQuery)
+        public List<(string Url, string Title, string Meta, double Score)> Search(string searchQuery)
         {
             string errMsg = string.Empty;
             var results = new Dictionary<string, (string Title, string Meta, double Score)>();
-            string[] words = searchQuery.ToLowerInvariant().Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(w => !StopWords.Contains(w))
+            string[] words = Tokenize(searchQuery)
+                .Distinct()
                 .ToArray();
 
             if (words.Length == 0)

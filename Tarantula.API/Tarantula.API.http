@@ -1,4 +1,4 @@
-@Tarantula.API_HostAddress = http://localhost:5073
+@Tarantula.API_HostAddress = http://localhost:7226
 
 GET {{Tarantula.API_HostAddress}}/weatherforecast/
 Accept: application/json
