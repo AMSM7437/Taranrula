@@ -42,27 +42,25 @@ const App = () => {
                             <button
                                 type="button"
                                 style={styles.clearButton}
-                                onClick={() => { setQuery(''); setResults([])  }}
+                                onClick={() => { setQuery(''); setResults([]) }}
                             >
                                 ✕
                             </button>
                         )}
                     </div>
-                  
+
                 </form>
 
                 <div style={styles.resultsContainer}>
                     {loading ? (
                         <div style={styles.loading}>
                             <span style={styles.spinner}></span>
-                            <p>Searching...</p>
+                            <p style={{color:"white"}}>Searching...</p>
                         </div>
                     ) : results.length === 0 ? (
                         <div style={styles.initialState}>
-                            {/*<svg style={styles.initialIcon} viewBox="0 0 24 24">*/}
-                            {/*    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />*/}
-                            {/*</svg>*/}
-                            {/*<p style={styles.initialText}>Enter a search query to begin</p>*/}
+                            {/* ahmad fill this later */}
+
                         </div>
                     ) : (
                         <div style={styles.resultsList}>
@@ -96,12 +94,12 @@ const App = () => {
     );
 };
 
-const styles = {
+const styles  = {
     container: {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        minWidth:'100dvw',
+        minWidth: '100dvw',
         backgroundColor: '#000',
         fontFamily: "'Roboto', 'Arial', sans-serif",
         color: '#202124',

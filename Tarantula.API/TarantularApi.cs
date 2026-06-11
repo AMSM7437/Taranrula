@@ -3,7 +3,7 @@ using Tarantula.Indexer;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
-var dbPath = @"../Tarantula.Runner/bin/Debug/net9.0/index.db";
+//var dbPath = @"../Tarantula.Runner/bin/Debug/net9.0/index.db";
 builder.Services.AddSingleton<TIndexer>(_ => new TIndexer());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -41,15 +41,15 @@ app.MapGet("/search", async ([FromQuery] string query, [FromServices] TIndexer i
 {
     if (string.IsNullOrWhiteSpace(query))
         return Results.BadRequest("Query parameter is required.");
-    
+
     var results = await indexer.Search(query);
 
     return Results.Ok(results.Select(r => new
     {
-        Url = r.Url,
+        Url = r.Url ?? "",
         Relevance = r.Score,
-        Meta = r.Meta,
-        Title = r.Title,
+        Meta = r.Meta ?? "",
+        Title = r.Title ?? "",
 
     }));
 });

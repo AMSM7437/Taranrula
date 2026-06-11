@@ -67,14 +67,23 @@
             tableLayoutPanel2.Size = new Size(296, 530);
             tableLayoutPanel2.TabIndex = 0;
             // 
-            // dataGridView1
+            // dgvCrawledUrls
             // 
+            dgvCrawledUrls.AllowUserToAddRows = false;
+            dgvCrawledUrls.AllowUserToDeleteRows = false;
+            dgvCrawledUrls.AllowUserToOrderColumns = true;
+            dgvCrawledUrls.AllowUserToResizeRows = false;
+            dgvCrawledUrls.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCrawledUrls.BackgroundColor = SystemColors.ButtonHighlight;
+            dgvCrawledUrls.BorderStyle = BorderStyle.None;
             dgvCrawledUrls.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvCrawledUrls.Columns.AddRange(new DataGridViewColumn[] { clmUrl, clmStatus, clmWordCount });
             dgvCrawledUrls.Dock = DockStyle.Fill;
+            dgvCrawledUrls.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvCrawledUrls.Location = new Point(302, 0);
             dgvCrawledUrls.Margin = new Padding(0);
-            dgvCrawledUrls.Name = "dataGridView1";
+            dgvCrawledUrls.Name = "dgvCrawledUrls";
+            dgvCrawledUrls.RowHeadersVisible = false;
             dgvCrawledUrls.Size = new Size(755, 536);
             dgvCrawledUrls.TabIndex = 1;
             // 
